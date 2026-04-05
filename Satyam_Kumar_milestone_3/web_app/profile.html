@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - CryptoPredict AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-violet));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 1rem;
+            border: 4px solid var(--glass-border);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .profile-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--secondary-emerald), var(--secondary-teal));
+        }
+
+        .danger-btn {
+            background: linear-gradient(135deg, var(--error), var(--accent-rose));
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--dark-bg);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-box-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-emerald), var(--secondary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-box-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">🚀</div>
+                <h1>CryptoPredict AI</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Dashboard</a>
+                <a href="profile.html" class="nav-link active">Profile</a>
+            </div>
+            <div class="nav-actions">
+                <button class="auth-btn" id="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar" id="profile-avatar">👤</div>
+            <h1 id="profile-name">Loading...</h1>
+            <p class="text-secondary" id="profile-email">Loading...</p>
+        </div>
+
+        <!-- Account Statistics -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-box-value" id="member-since">0</div>
+                <div class="stat-box-label">Days as Member</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-value" id="total-predictions">0</div>
+                <div class="stat-box-label">Total Predictions</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-value" id="favorite-count">0</div>
+                <div class="stat-box-label">Favorite Cryptos</div>
+            </div>
+        </div>
+
+        <!-- Profile Grid -->
+        <div class="profile-grid">
+            <!-- Personal Information -->
+            <div class="profile-card">
+                <h2>Personal Information</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="edit-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="edit-name" placeholder="Your name" required>
+                        </div>
+                        <span class="error-message" id="name-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input type="email" id="edit-email" placeholder="your@email.com" required>
+                        </div>
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-phone">Phone Number</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📱</span>
+                            <input type="tel" id="edit-phone" placeholder="+1234567890">
+                        </div>
+                        <span class="error-message" id="phone-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-birth-date">Birth Date</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📅</span>
+                            <input type="date" id="edit-birth-date">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn save-btn">
+                        <span class="btn-text">Save Changes</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="profile-card">
+                <h2>Security Settings</h2>
+                <form id="password-form">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="current-password" placeholder="Enter current password" required>
+                        </div>
+                        <span class="error-message" id="current-password-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔑</span>
+                            <input type="password" id="new-password" placeholder="Enter new password" required>
+                        </div>
+                        <span class="error-message" id="new-password-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-new-password">Confirm New Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔑</span>
+                            <input type="password" id="confirm-new-password" placeholder="Confirm new password"
+                                required>
+                        </div>
+                        <span class="error-message" id="confirm-new-password-error"></span>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Change Password</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Preferences -->
+            <div class="profile-card">
+                <h2>Preferences</h2>
+                <div class="form-group">
+                    <label>Theme</label>
+                    <div class="form-row">
+                        <button class="submit-btn secondary-btn" id="theme-dark">🌙 Dark</button>
+                        <button class="submit-btn secondary-btn" id="theme-light">☀️ Light</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Favorite Cryptocurrencies</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="BTCUSDT" class="favorite-crypto">
+                            <span class="checkbox-custom"></span>
+                            <span>Bitcoin (BTC)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="ETHUSDT" class="favorite-crypto">
+                            <span class="checkbox-custom"></span>
+                            <span>Ethereum (ETH)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="BNBUSDT" class="favorite-crypto">
+                            <span class="checkbox-custom"></span>
+                            <span>Binance Coin (BNB)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="XRPUSDT" class="favorite-crypto">
+                            <span class="checkbox-custom"></span>
+                            <span>Ripple (XRP)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="ASTRUSDT" class="favorite-crypto">
+                            <span class="checkbox-custom"></span>
+                            <span>Astar (ASTR)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="submit-btn save-btn" id="save-preferences-btn">
+                    <span class="btn-text">Save Preferences</span>
+                </button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="profile-card">
+                <h2
+                    style="background: linear-gradient(135deg, var(--error), var(--accent-rose)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Danger Zone</h2>
+                <p class="text-secondary" style="margin-bottom: 1.5rem;">Once you delete your account, there is no going
+                    back. Please be certain.</p>
+
+                <button class="submit-btn danger-btn" id="delete-account-btn">
+                    <span class="btn-text">Delete Account</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" style="display: none;">
+        <span class="toast-icon"></span>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <h2 style="margin-bottom: 1rem;">Delete Account?</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">This action cannot be undone. All your data
+                will be permanently deleted.</p>
+            <div class="form-row">
+                <button class="submit-btn secondary-btn" id="cancel-delete">Cancel</button>
+                <button class="submit-btn danger-btn" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let currentUser = null;
+
+        // Check authentication on page load
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/session`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+
+                if (!data.authenticated) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                currentUser = data.user;
+                loadUserProfile();
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserProfile() {
+            // Set profile header
+            document.getElementById('profile-name').textContent = currentUser.name;
+            document.getElementById('profile-email').textContent = currentUser.email;
+
+            // Set avatar initial
+            const initial = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('profile-avatar').textContent = initial;
+
+            // Set form values
+            document.getElementById('edit-name').value = currentUser.name;
+            document.getElementById('edit-email').value = currentUser.email;
+            document.getElementById('edit-phone').value = currentUser.phone || '';
+            document.getElementById('edit-birth-date').value = currentUser.birth_date || '';
+
+            // Set statistics
+            const memberSince = new Date(currentUser.created_at);
+            const daysSince = Math.floor((new Date() - memberSince) / (1000 * 60 * 60 * 24));
+            document.getElementById('member-since').textContent = daysSince;
+            document.getElementById('total-predictions').textContent = currentUser.stats?.total_predictions || 0;
+            document.getElementById('favorite-count').textContent = currentUser.preferences?.favorite_cryptos?.length || 0;
+
+            // Set favorite cryptos
+            if (currentUser.preferences?.favorite_cryptos) {
+                currentUser.preferences.favorite_cryptos.forEach(crypto => {
+                    const checkbox = document.querySelector(`.favorite-crypto[value="${crypto}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+        }
+
+        // Handle profile update
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = e.target.querySelector('.submit-btn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'flex';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        name: document.getElementById('edit-name').value,
+                        email: document.getElementById('edit-email').value,
+                        phone: document.getElementById('edit-phone').value || null,
+                        birth_date: document.getElementById('edit-birth-date').value || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Profile updated successfully!', 'success');
+                    currentUser = data.user;
+                    loadUserProfile();
+                } else {
+                    showToast(data.error || 'Update failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+            } finally {
+                btnText.style.display = 'block';
+                btnLoader.style.display = 'none';
+                btn.disabled = false;
+            }
+        });
+
+        // Handle password change
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-new-password').value;
+
+            if (newPassword !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+
+            const btn = e.target.querySelector('.submit-btn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'flex';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        old_password: document.getElementById('current-password').value,
+                        new_password: newPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Password changed successfully!', 'success');
+                    e.target.reset();
+                } else {
+                    showToast(data.error || 'Password change failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+            } finally {
+                btnText.style.display = 'block';
+                btnLoader.style.display = 'none';
+                btn.disabled = false;
+            }
+        });
+
+        // Handle preferences save
+        document.getElementById('save-preferences-btn').addEventListener('click', async () => {
+            const favoriteCryptos = Array.from(document.querySelectorAll('.favorite-crypto:checked'))
+                .map(cb => cb.value);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        preferences: {
+                            favorite_cryptos: favoriteCryptos
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Preferences saved!', 'success');
+                    currentUser = data.user;
+                    loadUserProfile();
+                } else {
+                    showToast(data.error || 'Save failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+            }
+        });
+
+        // Handle logout
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await fetch(`${API_BASE_URL}/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        // Handle account deletion
+        document.getElementById('delete-account-btn').addEventListener('click', () => {
+            document.getElementById('delete-modal').style.display = 'flex';
+        });
+
+        document.getElementById('cancel-delete').addEventListener('click', () => {
+            document.getElementById('delete-modal').style.display = 'none';
+        });
+
+        document.getElementById('confirm-delete').addEventListener('click', async () => {
+            // In a real app, you'd call a delete endpoint
+            showToast('Account deletion not implemented yet', 'warning');
+            document.getElementById('delete-modal').style.display = 'none';
+        });
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+
+</html>

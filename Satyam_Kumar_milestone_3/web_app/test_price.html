@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Price Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+
+        .card {
+            background: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #00d4ff;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00ff88;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-item {
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .label {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .value {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .positive {
+            color: #00ff88;
+        }
+
+        .negative {
+            color: #ff4757;
+        }
+
+        button {
+            background: #00d4ff;
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #00b8d4;
+        }
+
+        .loading {
+            text-align: center;
+            color: #00d4ff;
+            font-size: 18px;
+        }
+
+        .error {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🚀 Real-Time Bitcoin Price Test</h1>
+
+    <div class="card">
+        <div id="loading" class="loading">Loading...</div>
+        <div id="error" class="error" style="display:none;"></div>
+        <div id="content" style="display:none;">
+            <div class="price" id="price">$0.00</div>
+
+            <div class="info">
+                <div class="info-item">
+                    <div class="label">Price (INR)</div>
+                    <div class="value" id="price-inr">₹0.00</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">24h Change</div>
+                    <div class="value" id="change-24h">0.00%</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">24h High</div>
+                    <div class="value" id="high-24h">$0.00</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">24h Low</div>
+                    <div class="value" id="low-24h">$0.00</div>
+                </div>
+            </div>
+
+            <button onclick="fetchPrice()">🔄 Refresh Price</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+
+        async function fetchPrice() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const content = document.getElementById('content');
+
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            content.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/api/current-price/BTCUSDT`);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Update UI
+                document.getElementById('price').textContent = `$${data.price_usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('price-inr').textContent = `₹${data.price_inr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                const changeElem = document.getElementById('change-24h');
+                changeElem.textContent = `${data.change_24h > 0 ? '+' : ''}${data.change_24h.toFixed(2)}%`;
+                changeElem.className = `value ${data.change_24h >= 0 ? 'positive' : 'negative'}`;
+
+                document.getElementById('high-24h').textContent = `$${data.high_24h.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('low-24h').textContent = `$${data.low_24h.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                loading.style.display = 'none';
+                content.style.display = 'block';
+
+                console.log('✅ Live price fetched successfully:', data);
+
+            } catch (err) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = `Error: ${err.message}. Make sure the API server is running on http://localhost:5000`;
+                console.error('❌ Error fetching price:', err);
+            }
+        }
+
+        // Fetch price on load
+        fetchPrice();
+
+        // Auto-refresh every 30 seconds
+        setInterval(fetchPrice, 30000);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CryptoPredict AI</title>
+    <link rel="stylesheet" href="auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1">₿</div>
+            <div class="shape shape-2">Ξ</div>
+            <div class="shape shape-3">◆</div>
+            <div class="shape shape-4">✦</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="auth-container">
+        <!-- Left Side - Branding -->
+        <div class="auth-left">
+            <div class="brand-section">
+                <div class="brand-logo">
+                    <span class="logo-icon">🚀</span>
+                    <h1>CryptoPredict AI</h1>
+                </div>
+                <p class="brand-tagline">Advanced Machine Learning for Cryptocurrency Forecasting</p>
+            </div>
+
+            <div class="features-section">
+                <h2>Why Choose Us?</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">🎯</span>
+                        <div class="feature-content">
+                            <h3>95%+ Accuracy</h3>
+                            <p>Industry-leading LSTM models</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <div class="feature-content">
+                            <h3>Real-Time Predictions</h3>
+                            <p>Live market data integration</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <div class="feature-content">
+                            <h3>Advanced Analytics</h3>
+                            <p>Comprehensive market insights</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔒</span>
+                        <div class="feature-content">
+                            <h3>Secure & Private</h3>
+                            <p>Your data is protected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Price Ticker -->
+            <div class="price-ticker">
+                <div class="ticker-label">Live Prices</div>
+                <div class="ticker-scroll">
+                    <div class="ticker-item">
+                        <span class="ticker-symbol">BTC</span>
+                        <span class="ticker-price" id="btc-price">$95,234</span>
+                        <span class="ticker-change positive">+2.3%</span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="ticker-symbol">ETH</span>
+                        <span class="ticker-price" id="eth-price">$3,456</span>
+                        <span class="ticker-change positive">+1.8%</span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="ticker-symbol">BNB</span>
+                        <span class="ticker-price" id="bnb-price">$612</span>
+                        <span class="ticker-change negative">-0.5%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="auth-right">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to access your dashboard</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required
+                                autocomplete="email">
+                        </div>
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="password" name="password" placeholder="Enter your password"
+                                required autocomplete="current-password">
+                            <button type="button" class="toggle-password" id="toggle-password">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                        <span class="error-message" id="password-error"></span>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkbox-custom"></span>
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="login-btn">
+                        <span class="btn-text">Sign In</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span>
+                        </span>
+                    </button>
+
+                    <div class="form-divider">
+                        <span>or continue with</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button type="button" class="social-btn google-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path
+                                    d="M19.6 10.227c0-.709-.064-1.39-.182-2.045H10v3.868h5.382a4.6 4.6 0 01-1.996 3.018v2.51h3.232c1.891-1.742 2.982-4.305 2.982-7.35z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M10 20c2.7 0 4.964-.895 6.618-2.423l-3.232-2.509c-.895.6-2.04.955-3.386.955-2.605 0-4.81-1.76-5.595-4.123H1.064v2.59A9.996 9.996 0 0010 20z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M4.405 11.9c-.2-.6-.314-1.24-.314-1.9 0-.66.114-1.3.314-1.9V5.51H1.064A9.996 9.996 0 000 10c0 1.614.386 3.14 1.064 4.49l3.34-2.59z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M10 3.977c1.468 0 2.786.505 3.823 1.496l2.868-2.868C14.959.99 12.695 0 10 0 6.09 0 2.71 2.24 1.064 5.51l3.34 2.59C5.19 5.736 7.395 3.977 10 3.977z"
+                                    fill="#EA4335" />
+                            </svg>
+                            <span>Google</span>
+                        </button>
+                        <button type="button" class="social-btn github-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span>GitHub</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="signup.html" class="signup-link">Sign up</a></p>
+                </div>
+
+                <!-- Error/Success Toast -->
+                <div class="toast" id="toast" style="display: none;">
+                    <span class="toast-icon"></span>
+                    <span class="toast-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize login page
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeLoginPage();
+        });
+    </script>
+</body>
+
+</html>

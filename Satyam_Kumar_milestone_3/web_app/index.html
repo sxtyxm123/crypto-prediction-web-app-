@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoPredict AI - Advanced Price Forecasting</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">🚀</div>
+                <h1>CryptoPredict AI</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a>
+                <a href="#predictions" class="nav-link" data-section="predictions">Predictions</a>
+                <a href="#analytics" class="nav-link" data-section="analytics">Analytics</a>
+                <a href="#about" class="nav-link" data-section="about">About</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">🌙</button>
+                <button class="auth-btn" id="login-btn">Login</button>
+                <button class="auth-btn primary" id="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Select Cryptocurrency</h3>
+                <div class="crypto-buttons">
+                    <button class="crypto-btn active" data-crypto="BTCUSDT">
+                        <span class="crypto-icon">₿</span>
+                        <div class="crypto-info">
+                            <span class="crypto-name">Bitcoin</span>
+                            <span class="crypto-symbol">BTC</span>
+                        </div>
+                    </button>
+                    <button class="crypto-btn" data-crypto="ETHUSDT">
+                        <span class="crypto-icon">Ξ</span>
+                        <div class="crypto-info">
+                            <span class="crypto-name">Ethereum</span>
+                            <span class="crypto-symbol">ETH</span>
+                        </div>
+                    </button>
+                    <button class="crypto-btn" data-crypto="BNBUSDT">
+                        <span class="crypto-icon">◆</span>
+                        <div class="crypto-info">
+                            <span class="crypto-name">Binance</span>
+                            <span class="crypto-symbol">BNB</span>
+                        </div>
+                    </button>
+                    <button class="crypto-btn" data-crypto="XRPUSDT">
+                        <span class="crypto-icon">✦</span>
+                        <div class="crypto-info">
+                            <span class="crypto-name">Ripple</span>
+                            <span class="crypto-symbol">XRP</span>
+                        </div>
+                    </button>
+                    <button class="crypto-btn" data-crypto="ASTRUSDT">
+                        <span class="crypto-icon">★</span>
+                        <div class="crypto-info">
+                            <span class="crypto-name">Astar</span>
+                            <span class="crypto-symbol">ASTR</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Model Information</h3>
+                <div class="model-info">
+                    <div class="info-item">
+                        <span class="info-label">Architecture</span>
+                        <span class="info-value">Bi-LSTM</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Accuracy</span>
+                        <span class="info-value" id="sidebar-accuracy">95.2%</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">R² Score</span>
+                        <span class="info-value" id="sidebar-r2">0.9191</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Timeframe</span>
+                        <span class="info-value">1 Hour</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <button class="action-btn primary" id="predict-btn">
+                    <span>🔮</span> Generate Prediction
+                </button>
+                <button class="action-btn secondary" id="refresh-btn">
+                    <span>🔄</span> Refresh Data
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <!-- Price Overview Cards -->
+                <div class="overview-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-header">
+                            <span class="stat-icon">💵</span>
+                            <span class="stat-label">Current Price (USD)</span>
+                        </div>
+                        <div class="stat-value" id="price-usd">$92,422.00</div>
+                        <div class="stat-change positive">+2.34%</div>
+                    </div>
+
+                    <div class="stat-card secondary">
+                        <div class="stat-header">
+                            <span class="stat-icon">₹</span>
+                            <span class="stat-label">Price in INR</span>
+                        </div>
+                        <div class="stat-value" id="price-inr">₹83,48,967</div>
+                        <div class="stat-change">Rate: ₹90.34</div>
+                    </div>
+
+                    <div class="stat-card accent">
+                        <div class="stat-header">
+                            <span class="stat-icon">📊</span>
+                            <span class="stat-label">24h Volume</span>
+                        </div>
+                        <div class="stat-value">$28.5B</div>
+                        <div class="stat-change positive">+12.5%</div>
+                    </div>
+
+                    <div class="stat-card success">
+                        <div class="stat-header">
+                            <span class="stat-icon">🎯</span>
+                            <span class="stat-label">Prediction Accuracy</span>
+                        </div>
+                        <div class="stat-value" id="accuracy-display">95.2%</div>
+                        <div class="stat-change">R² Score: 0.9191</div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h2 id="chart-title">Bitcoin Price Prediction</h2>
+                        <div class="chart-controls">
+                            <div class="control-group">
+                                <label>Chart Type:</label>
+                                <select id="chart-type">
+                                    <option value="candlestick">Candlestick</option>
+                                    <option value="line">Line Chart</option>
+                                    <option value="area">Area Chart</option>
+                                    <option value="combined">Combined View</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Timeframe:</label>
+                                <select id="timeframe">
+                                    <option value="24">Last 24 Hours</option>
+                                    <option value="48" selected>Last 48 Hours</option>
+                                    <option value="72">Last 72 Hours</option>
+                                    <option value="168">Last Week</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div id="main-chart"></div>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-section">
+                    <h2>Performance Metrics</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">📈</div>
+                            <div class="metric-content">
+                                <span class="metric-label">Mean Absolute Error</span>
+                                <span class="metric-value" id="mae-metric">₹1,956.32</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">📉</div>
+                            <div class="metric-content">
+                                <span class="metric-label">Mean Squared Error</span>
+                                <span class="metric-value" id="mse-metric">16,325,779</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">🎯</div>
+                            <div class="metric-content">
+                                <span class="metric-label">R² Score</span>
+                                <span class="metric-value" id="r2-metric">0.9191</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">⚡</div>
+                            <div class="metric-content">
+                                <span class="metric-label">Training Time</span>
+                                <span class="metric-value">8.5 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training Progress Chart -->
+                <div class="analytics-section">
+                    <div class="analytics-grid single-chart">
+                        <div class="analytics-card">
+                            <h3>Training Progress</h3>
+                            <canvas id="training-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Predictions Section -->
+            <section id="predictions" class="content-section">
+                <h2 class="section-header">Advanced Price Predictions</h2>
+
+                <!-- Multi-timeframe Predictions -->
+                <div class="prediction-grid">
+                    <div class="prediction-card">
+                        <h3>1 Hour Forecast</h3>
+                        <div class="forecast-value" id="forecast-1h">Loading...</div>
+                        <div class="forecast-confidence">Confidence: <span id="conf-1h">95%</span></div>
+                    </div>
+                    <div class="prediction-card">
+                        <h3>4 Hour Forecast</h3>
+                        <div class="forecast-value" id="forecast-4h">Loading...</div>
+                        <div class="forecast-confidence">Confidence: <span id="conf-4h">92%</span></div>
+                    </div>
+                    <div class="prediction-card">
+                        <h3>24 Hour Forecast</h3>
+                        <div class="forecast-value" id="forecast-24h">Loading...</div>
+                        <div class="forecast-confidence">Confidence: <span id="conf-24h">88%</span></div>
+                    </div>
+                </div>
+
+                <!-- Prediction Bands Chart -->
+                <div class="chart-section">
+                    <h3>Prediction with Confidence Intervals</h3>
+                    <div class="chart-container">
+                        <div id="confidence-chart"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <h2 class="section-header">Advanced Analytics & Model Comparison</h2>
+
+                <!-- Model Comparison Table -->
+                <div class="model-comparison-section">
+                    <h3>Model Performance Comparison</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>MAE</th>
+                                <th>RMSE</th>
+                                <th>R²</th>
+                                <th>MAPE</th>
+                                <th>Dir. Accuracy</th>
+                            </tr>
+                        </thead>
+                        <tbody id="model-table-body">
+                            <tr>
+                                <td>LSTM</td>
+                                <td>1,956.32</td>
+                                <td>4,041.23</td>
+                                <td>0.9191</td>
+                                <td>2.12%</td>
+                                <td>87.3%</td>
+                            </tr>
+                            <tr>
+                                <td>XGBoost</td>
+                                <td>2,134.45</td>
+                                <td>4,523.67</td>
+                                <td>0.8945</td>
+                                <td>2.31%</td>
+                                <td>85.1%</td>
+                            </tr>
+                            <tr>
+                                <td>Random Forest</td>
+                                <td>2,456.78</td>
+                                <td>5,012.34</td>
+                                <td>0.8723</td>
+                                <td>2.67%</td>
+                                <td>83.7%</td>
+                            </tr>
+                            <tr>
+                                <td>ARIMA</td>
+                                <td>3,123.56</td>
+                                <td>6,234.89</td>
+                                <td>0.8234</td>
+                                <td>3.38%</td>
+                                <td>79.2%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Feature Importance -->
+                <div class="features-section">
+                    <h2>Feature Importance Analysis</h2>
+                    <div class="features-container">
+                        <canvas id="features-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="content-section">
+                <h2 class="section-header">About CryptoPredict AI</h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <h3>🚀 What is CryptoPredict AI?</h3>
+                        <p>CryptoPredict AI is an advanced cryptocurrency price forecasting platform that leverages
+                            cutting-edge artificial intelligence to help you make informed trading decisions. Our
+                            platform analyzes vast amounts of market data in real-time to provide accurate price
+                            predictions for major cryptocurrencies including Bitcoin, Ethereum, Binance Coin, Ripple,
+                            and Astar.</p>
+                        <p style="margin-top: 1rem;">Whether you're a seasoned trader or just starting your crypto
+                            journey, our intuitive interface and powerful predictions give you the insights you need to
+                            stay ahead of the market.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🤖 Technology Stack</h3>
+                        <ul>
+                            <li>LSTM & GRU Neural Networks</li>
+                            <li>XGBoost & Random Forest</li>
+                            <li>ARIMA Time Series Models</li>
+                            <li>Advanced Technical Indicators</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>📊 Features</h3>
+                        <ul>
+                            <li>Multi-model ensemble predictions</li>
+                            <li>Confidence intervals & risk analysis</li>
+                            <li>Directional accuracy tracking</li>
+                            <li>Real-time market data integration</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>💡 Why Choose Us?</h3>
+                        <p><strong>Accuracy You Can Trust:</strong> Our prediction models achieve over 95% accuracy on
+                            major cryptocurrencies, giving you reliable forecasts you can act on.</p>
+                        <p style="margin-top: 1rem;"><strong>Real-Time Intelligence:</strong> We continuously monitor
+                            market conditions and update our predictions every hour, ensuring you always have the latest
+                            insights.</p>
+                        <p style="margin-top: 1rem;"><strong>Comprehensive Analysis:</strong> Beyond simple price
+                            predictions, we provide confidence intervals, trend analysis, and historical performance
+                            metrics.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🔒 Your Data, Your Privacy</h3>
+                        <p>We take your privacy seriously. All your personal information is securely encrypted and
+                            stored. We never share your data with third parties, and you maintain full control over your
+                            account at all times.</p>
+                        <p style="margin-top: 1rem;">Our platform uses industry-standard security practices to ensure
+                            your information remains safe and confidential.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🌟 Getting Started</h3>
+                        <p><strong>1. Create Your Account:</strong> Sign up in seconds with just your email and basic
+                            information.</p>
+                        <p style="margin-top: 0.75rem;"><strong>2. Explore the Dashboard:</strong> Browse real-time
+                            prices and predictions for all supported cryptocurrencies.</p>
+                        <p style="margin-top: 0.75rem;"><strong>3. Analyze Trends:</strong> Use our interactive charts
+                            and analytics to understand market movements.</p>
+                        <p style="margin-top: 0.75rem;"><strong>4. Make Informed Decisions:</strong> Leverage our
+                            predictions to guide your trading strategy.</p>
+                    </div>
+                </div>
+
+                <div class="about-disclaimer"
+                    style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 1rem; border-left: 4px solid var(--accent-coral);">
+                    <h3 style="margin-bottom: 1rem; color: var(--accent-coral);">⚠️ Important Disclaimer</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                        Cryptocurrency trading involves substantial risk and may not be suitable for everyone. Our
+                        predictions are based on historical data and statistical models, but past performance does not
+                        guarantee future results. Always conduct your own research and consider your financial situation
+                        before making any investment decisions. CryptoPredict AI provides educational tools and should
+                        not be considered as financial advice.
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 CryptoPredict AI - Advanced Machine Learning for Cryptocurrency Forecasting</p>
+            <p>Powered by LSTM Neural Networks | Data from Binance API</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
